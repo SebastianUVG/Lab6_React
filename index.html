@@ -19,27 +19,81 @@
     <!-- Codigo -->
     <script type="text/babel">
         const MemoryGame = () => {
+            // Estado del juego como cartas volteadas, movimientos, bloquear las cartas encontradas, completar el juego.
+            const [cards, setCards] = React.useState([]);
+            const [flipped, setFlipped] = React.useState([]);
+            const [solved, setSolved] = React.useState([]);
+            const [disabled, setDisabled] = React.useState(false);
+            const [moves, setMoves] = React.useState(0);
+            const [gameComplete, setGameComplete] = React.useState(false);
             
+            // iniciar el juego
+            React.useEffect(() => {
+                initializeGame();
+            }, []);
+            
+            // Crear los iconos que contendran las tarjetas del juego
+            const initializeGame = () => {
+                const symbols = ['⚽', '🐱', '🐢', '🦕', '🦩', '🏐', '🚀', '⭐'];
+                const pairs = [...symbols, ...symbols];
+                const shuffled = pairs.sort(() => Math.random() - 0.5);
+                
+                setCards(shuffled.map((symbol, index) => ({
+                    id: index,
+                    symbol,
+                    flipped: false
+                })));
+                setFlipped([]);
+                setSolved([]);
+                setDisabled(false);
+                setMoves(0);
+                setGameComplete(false);
+            };
+            
+            
+            
+            // Renderizar los iconos del juego.
+            const renderCard = (card) => {
+                const isFlipped = flipped.includes(card.id) || solved.includes(card.id);
+                
+                return (
+                    <div 
+                        key={card.id}
+                        className={`card ${isFlipped ? 'flipped' : ''}`}
+                        onClick={() => handleCardClick(card.id)}
+                    >
+                        <div className="card-inner">
+                            <div className="card-front"></div>
+                            <div className="card-back">{card.symbol}</div>
+                        </div>
+                    </div>
+                );
+            };
             
             return (
                 <div className="game-container">
                     <h1>Juego de Memoria</h1>
                     <div className="game-info">
-                        <p>Movimientos: </p>
-                        <button >Reiniciar Juego</button>
+                        <p>Movimientos: {moves}</p>
+                        <button onClick={initializeGame}>Reiniciar Juego</button>
                     </div>
                     
-                    
+                    {gameComplete && (
+                        <div className="game-complete">
+                            <h2>¡Juego Completado!</h2>
+                            <p>Total de movimientos: {moves}</p>
+                        </div>
+                    )}
                     
                     <div className="cards-grid">
-                    
+                        {cards.map(renderCard)}
                     </div>
                 </div>
             );
         };
 
-        // Renderizar
+        // Renderizar 
         ReactDOM.render(<MemoryGame />, document.getElementById('root'));
     </script>
 </body>
-</html>
+</html>s
