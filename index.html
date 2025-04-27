@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego de Memoria</title>
     <style>
-        
+    
+    
     </style>
 </head>
 <body>
@@ -17,7 +18,28 @@
     
     <!-- Codigo -->
     <script type="text/babel">
+        const MemoryGame = () => {
+            
+            
+            return (
+                <div className="game-container">
+                    <h1>Juego de Memoria</h1>
+                    <div className="game-info">
+                        <p>Movimientos: </p>
+                        <button >Reiniciar Juego</button>
+                    </div>
+                    
+                    
+                    
+                    <div className="cards-grid">
+                    
+                    </div>
+                </div>
+            );
+        };
 
+        // Renderizar
+        ReactDOM.render(<MemoryGame />, document.getElementById('root'));
     </script>
 </body>
 </html>
