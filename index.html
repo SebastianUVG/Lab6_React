@@ -69,6 +69,41 @@
                     </div>
                 );
             };
+
+            // Hacer interaccion con las tarjetas, para que detecten el click
+            const handleCardClick = (id) => {
+                if (disabled || flipped.includes(id) || solved.includes(id)) return;
+                
+                const newFlipped = [...flipped, id];
+                setFlipped(newFlipped);
+                
+                if (newFlipped.length === 2) {
+                    setMoves(moves + 1);
+                    setDisabled(true);
+                    
+                    const [firstId, secondId] = newFlipped;
+                    const firstCard = cards.find(c => c.id === firstId);
+                    const secondCard = cards.find(c => c.id === secondId);
+                    
+                    if (firstCard.symbol === secondCard.symbol) {
+                        setSolved([...solved, ...newFlipped]);
+                        setFlipped([]);
+                        setDisabled(false);
+                    } else {
+                        setTimeout(() => {
+                            setFlipped([]);
+                            setDisabled(false);
+                        }, 1000);
+                    }
+                }
+            };
+
+            // validacion para cuando el juego se haya ganado.
+            React.useEffect(() => {
+                if (solved.length === 16 && cards.length > 0) {
+                    setGameComplete(true);
+                }
+            }, [solved, cards]);
             
             return (
                 <div className="game-container">
@@ -96,4 +131,4 @@
         ReactDOM.render(<MemoryGame />, document.getElementById('root'));
     </script>
 </body>
-</html>s
+</html>
